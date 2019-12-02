@@ -7,12 +7,10 @@
  */
 package com.mg.mscollection.dao;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.mg.mscollection.entity.Artist;
+import com.mg.mscollection.entity.Style;
 
-public interface ArtistDAO {
+public interface StyleRepository extends JpaRepository<Style, Long> {
 
-  public List<Artist> findAll();
-  
 }
