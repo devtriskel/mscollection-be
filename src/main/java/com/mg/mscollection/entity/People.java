@@ -7,33 +7,46 @@
  */
 package com.mg.mscollection.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="people")
+@Table(name = "people")
 public class People {
 
   @Id
-  @GeneratedValue(strategy=GenerationType.IDENTITY)
-  @Column(name="id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
   private Long id;
   
-  @Column(name="name")
+  @Column(name = "name")
   private String name;
   
-  @Column(name="years")
+  @Column(name = "years")
   private Integer years;
   
-  //Public constructors
+  @ManyToMany
+  @JoinTable(
+      name = "artists_people",
+      joinColumns = @JoinColumn(name = "people_id", referencedColumnName = "id"),
+      inverseJoinColumns = @JoinColumn(name = "artist_id", referencedColumnName = "id"))
+  private Set<Artist> artists = new HashSet<>();
+  
+  // Public constructors
   public People() {
 
   }
- 
+
   public People(String name, Integer years) {
     this.name = name;
     this.years = years;
@@ -64,9 +77,17 @@ public class People {
     this.years = years;
   }
 
+  public Set<Artist> getArtists() {
+    return artists;
+  }
+
+  public void setArtists(Set<Artist> artists) {
+    this.artists = artists;
+  }
+
   @Override
   public String toString() {
-    return "People [id=" + id + ", name=" + name + ", years=" + years + "]";
-  }
+    return "People [id=" + id + ", name=" + name + ", years=" + years + ", artists=" + artists + "]";
+  }  
 
 }
