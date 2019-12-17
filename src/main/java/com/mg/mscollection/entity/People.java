@@ -85,4 +85,11 @@ public class People {
     return "People [id=" + id + ", name=" + name + ", years=" + years + ", artist=" + artist + "]";
   }
 
+  /**
+   * Get related artist as object
+   * @return
+   */
+  public Artist getRelatedArtist() {
+    return this.artist;
+  }
 }
