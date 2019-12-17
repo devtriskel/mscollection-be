@@ -10,8 +10,10 @@ package com.mg.mscollection.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,7 +34,9 @@ public class Style {
   @Column(name = "name")
   private String name;
 
-  @ManyToMany
+  @ManyToMany(
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH},
+      fetch = FetchType.LAZY)
   @JoinTable(
       name = "artists_styles",
       joinColumns = @JoinColumn(name = "style_id", referencedColumnName = "id"),

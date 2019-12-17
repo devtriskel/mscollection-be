@@ -10,14 +10,17 @@ package com.mg.mscollection.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -35,28 +38,33 @@ public class Artist {
   @Column(name = "year")
   private Integer year;
   
-  @ManyToMany
-  @JoinTable(
-      name = "artists_people",
-      joinColumns = @JoinColumn(name = "artist_id", referencedColumnName = "id"),
-      inverseJoinColumns = @JoinColumn(name = "people_id", referencedColumnName = "id"))
+  @OneToMany(
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH},
+      fetch = FetchType.LAZY,
+      mappedBy = "artist")
   private Set<People> members = new HashSet<>();
   
-  @ManyToMany
+  @ManyToMany(
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH},
+      fetch = FetchType.LAZY)
   @JoinTable(
       name = "artists_styles",
       joinColumns = @JoinColumn(name = "artist_id", referencedColumnName = "id"),
       inverseJoinColumns = @JoinColumn(name = "style_id", referencedColumnName = "id"))
   private Set<Style> styles = new HashSet<>();  
   
-  @ManyToMany
+  @ManyToMany(
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH},
+      fetch = FetchType.LAZY)
   @JoinTable(
       name = "related_artists", 
       joinColumns = @JoinColumn(name = "artist_id", referencedColumnName = "id"), 
       inverseJoinColumns = @JoinColumn(name = "related_artist_id", referencedColumnName = "id"))
   private Set<Artist> relatedToArtists = new HashSet<>();
   
-  @ManyToMany
+  @ManyToMany(
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH},
+      fetch = FetchType.LAZY)
   @JoinTable(
       name = "related_artists",
       joinColumns = @JoinColumn(name = "related_artist_id", referencedColumnName = "id"),
