@@ -7,17 +7,14 @@
  */
 package com.mg.mscollection.entity;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -35,21 +32,19 @@ public class People {
   @Column(name = "years")
   private Integer years;
   
-  @ManyToMany
-  @JoinTable(
-      name = "artists_people",
-      joinColumns = @JoinColumn(name = "people_id", referencedColumnName = "id"),
-      inverseJoinColumns = @JoinColumn(name = "artist_id", referencedColumnName = "id"))
-  private Set<Artist> artists = new HashSet<>();
+  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+  @JoinColumn(name = "artist_id")
+  private Artist artist;
   
   // Public constructors
   public People() {
 
   }
 
-  public People(String name, Integer years) {
+  public People(String name, Integer years, Artist artist) {
     this.name = name;
     this.years = years;
+    this.artist = artist;
   }
 
   // Getters, Setters & ToString
@@ -77,17 +72,17 @@ public class People {
     this.years = years;
   }
 
-  public Set<Artist> getArtists() {
-    return artists;
+  public Artist getArtist() {
+    return artist;
   }
 
-  public void setArtists(Set<Artist> artists) {
-    this.artists = artists;
+  public void setArtist(Artist artist) {
+    this.artist = artist;
   }
 
   @Override
   public String toString() {
-    return "People [id=" + id + ", name=" + name + ", years=" + years + ", artists=" + artists + "]";
-  }  
+    return "People [id=" + id + ", name=" + name + ", years=" + years + ", artist=" + artist + "]";
+  }
 
 }
